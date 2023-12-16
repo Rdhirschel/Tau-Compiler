@@ -1,44 +1,57 @@
-#include <stdio.h>
+#include <iostream>
 #include <fstream>
 #include <sstream>
-#include <iostream>
+#include <vector>
+#include <cstdlib>
 
 #include "./token.hpp"
 
 typedef unsigned int uint;
-template<typename T>
+template <typename T>
 using Vec = std::vector<T>;
 typedef std::string String;
 
 String tokens_to_assembly(const Vec<Token>& tokens)
 {
-    String assembly;
-    for (const Token& token : tokens) {
-        switch (token.type) {
-            case TokenType::_return:
-                assembly += "mov rax, 0\n";
-                assembly += "ret\n";
-                break;
-            case TokenType::_int:
-                assembly += "mov rax, ";
-                assembly += token.val.value();
-                assembly += "\n";
-                break;
-            case TokenType::semicolon:
-                assembly += "ret\n";
-                break;
+    std::stringstream assembly;
+    assembly << "global _start\nstart:\n";
+
+    for (int i = 0; i < tokens.size(); i++)
+    {
+        const Token& token = tokens[i];
+        if (token.type == TokenType::_return) 
+        {
+            if (i + 1 < tokens.size() && tokens[i + 1].type == TokenType::_int) 
+            {
+                if (i + 2 < tokens.size() && tokens[i + 2].type == TokenType::semicolon)
+                {
+                    assembly << "    mov rax, 60\n";
+                    assembly << "    mov rdi, " << tokens[i + 1].val.value() << "\n";
+                    assembly << "    syscall\n";
+                    i += 2;
+                }
+
+                else
+                {
+                    std::cerr << "Expected semicolon after return statement" << std::endl;
+                    exit(EXIT_FAILURE);
+                }
+            }
+
         }
     }
-    return assembly;
+    return assembly.str();
 }
 
 int main(int argc, char* argv[])
 {
-    if (argc != 2) {
-        std::cerr << "Incorrect usuage. Correct usage: .\\tau <input.tau>" << std::endl;
+    if (argc != 2)
+    {
+        std::cerr << "Incorrect usage. Correct usage: .\\tau <input.tau>" << std::endl;
         return EXIT_FAILURE;
     }
-    String content; {
+    String content;
+    {
         std::stringstream buffer;
         std::fstream input(argv[1], std::ios::in);
         buffer << input.rdbuf();
@@ -48,12 +61,15 @@ int main(int argc, char* argv[])
 
     Tokenizer tokenizer(std::move(content));
     std::vector<Token> tokens = tokenizer.tokenize();
+
     {
-        std::fstream file("out.asm", std::ios::out);
-        file << tokens_to_assembly(tokens);
+        std::fstream output("out.asm", std::ios::out);
+        output << tokens_to_assembly(tokens);
+        output.close();
     }
 
-    system("nasm -f elf64 out.asm -o out.o"); // Compile to object file
-    system("ld out.o -o out"); // Link object file to executable
+    system("nasm -f elf64 -o D:\\VisualStudioCodeProjects\\Tau-Compiler\\output\\out.o out.asm"); // Compile to object file
+    system("ld -o D:\\VisualStudioCodeProjects\\Tau-Compiler\\output\\out D:\\VisualStudioCodeProjects\\Tau-Compiler\\output\\out.o"); // Link object file to executable
+
     return EXIT_SUCCESS;
 }

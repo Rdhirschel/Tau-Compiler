@@ -1,6 +1,6 @@
-^C:\USERS\HYRSL\VSCODE\TAU-COMPILER\BUILD\CMAKEFILES\89250E947BB74E96CA9170EB1864AC5D\GENERATE.STAMP.RULE
+^D:\VISUALSTUDIOCODEPROJECTS\TAU-COMPILER\BUILD\CMAKEFILES\0834DED262A9B18B6385F12AD3DB4ACC\GENERATE.STAMP.RULE
 setlocal
-"C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SC:/Users/hyrsl/vscode/Tau-Compiler -BC:/Users/hyrsl/vscode/Tau-Compiler/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/hyrsl/vscode/Tau-Compiler/build/tau.sln
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/VisualStudioCodeProjects/Tau-Compiler -BD:/VisualStudioCodeProjects/Tau-Compiler/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file D:/VisualStudioCodeProjects/Tau-Compiler/build/tau.sln
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
