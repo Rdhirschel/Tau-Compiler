@@ -8,7 +8,7 @@ using namespace std;
 #include <cctype>
 #include <iostream>
 #include <sstream>
-#include <./parser.hpp>
+#include "./parser.hpp"
 
 typedef unsigned int uint;
 template<typename T>
@@ -25,9 +25,9 @@ public:
     {
         stringstream assembly;
         assembly << "global _start\n_start:\n";
-        assembly << "move rax, 60\n";
-        assembly << "mov rdi, " << root.expr.int_literal.val.value() << "\n";
-        assembly << "syscall\n";
+        assembly << "\tmov rax, 60\n";
+        assembly << "\tmov rdi, " << root.expr.int_literal.val.value() << "\n";
+        assembly << "\tsyscall\n";
 
         return assembly.str();
     }
