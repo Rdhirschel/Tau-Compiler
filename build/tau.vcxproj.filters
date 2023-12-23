@@ -1,16 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="D:\VisualStudioCodeProjects\Tau-Compiler\src\main.cpp">
+    <ClCompile Include="C:\Users\hyrsl\vscode\Tau-Compiler\src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="D:\VisualStudioCodeProjects\Tau-Compiler\CMakeLists.txt" />
+    <CustomBuild Include="C:\Users\hyrsl\vscode\Tau-Compiler\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
-      <UniqueIdentifier>{5E8E2520-72DA-3F6D-A5CF-D39419CC33D5}</UniqueIdentifier>
+      <UniqueIdentifier>{9D409D55-A988-30C8-A221-3B6F4DA94FAB}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

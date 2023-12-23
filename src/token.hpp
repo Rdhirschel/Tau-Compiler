@@ -6,10 +6,12 @@
 #include <cctype>
 #include <iostream>
 
+using namespace std;
+
 typedef unsigned int uint;
 template<typename T>
 using Vec = std::vector<T>;
-typedef std::string String;
+typedef string String;
 
 enum class TokenType {
     _return,
@@ -19,14 +21,14 @@ enum class TokenType {
 
 struct Token {
     TokenType type;
-    std::optional<std::string> val;
+    optional<String> val;
 };
 
 class Tokenizer 
 {
 public:
 
-    inline explicit Tokenizer(const std::string& content) : content(std::move(content))
+    inline explicit Tokenizer(const String& content) : content(std::move(content))
     {
     }
 
@@ -34,12 +36,12 @@ public:
     {
         String buffer;
         Vec<Token> tokens;
-        while (peak().has_value()) 
+        while (peek().has_value()) 
         {
-            if (std::isalpha(peak().value())) 
+            if (isalpha(peek().value())) 
             {
                 buffer.push_back(consume());
-                while (peak().has_value() && std::isalnum(peak().value())) 
+                while (peek().has_value() && std::isalnum(peek().value())) 
                 {
                     buffer.push_back(consume());
                 }
@@ -51,10 +53,10 @@ public:
                 }
             }
 
-            else if (std::isdigit(peak().value())) 
+            else if (isdigit(peek().value())) 
             {
                 buffer.push_back(consume());
-                while (peak().has_value() && std::isdigit(peak().value())) 
+                while (peek().has_value() && isdigit(peek().value())) 
                 {
                     buffer.push_back(consume());
                 }
@@ -63,43 +65,44 @@ public:
                 continue;
             }
 
-            else if (peak().value() == ';') 
+            else if (peek().value() == ';') 
             {
                 tokens.push_back({TokenType::semicolon});
                 consume();
                 continue;
             }
                 
-            else if (std::isspace(peak().value())) 
+            else if (isspace(peek().value())) 
             {
                 consume();
                 continue;
             }
 
+
             else 
             {
-                std::cerr << "Unexpected character: " << peak().value() << std::endl;
+                cerr << "Unexpected character: " << peek().value() << endl;
                 return {};
             }
         }
-
+        index = 0;
         return tokens;
     }
 
 
 private:
     String content;
-    uint index = 0;
-    std::optional<char> peak(uint ahead = 1) const
+    size_t index = 0;
+    inline optional<char> peek(size_t ahead = 0) const
     {
         if (index + ahead >= content.length()) 
         {
-            return std::nullopt;
+            return nullopt;
         }
-        return content[index];
+        return content[index + ahead];
     }
 
-    char consume() 
+    inline char consume() 
     {
         return content[index++];
     }

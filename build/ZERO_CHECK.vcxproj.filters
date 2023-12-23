@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <CustomBuild Include="D:\VisualStudioCodeProjects\Tau-Compiler\build\CMakeFiles\0834ded262a9b18b6385f12ad3db4acc\generate.stamp.rule">
+    <CustomBuild Include="C:\Users\hyrsl\vscode\Tau-Compiler\build\CMakeFiles\89250e947bb74e96ca9170eb1864ac5d\generate.stamp.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="CMake Rules">
-      <UniqueIdentifier>{BCDEEC02-1F45-3F5B-9459-98ABCCD438C0}</UniqueIdentifier>
+      <UniqueIdentifier>{C9C900EB-9BCD-3743-9B29-C78C8FD62626}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

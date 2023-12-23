@@ -5,43 +5,13 @@
 #include <cstdlib>
 
 #include "./token.hpp"
+#include "./parser.hpp"
+#include "./generation.hpp"
 
 typedef unsigned int uint;
 template <typename T>
 using Vec = std::vector<T>;
 typedef std::string String;
-
-String tokens_to_assembly(const Vec<Token>& tokens)
-{
-    std::stringstream assembly;
-    assembly << "global _start\nstart:\n";
-
-    for (int i = 0; i < tokens.size(); i++)
-    {
-        const Token& token = tokens[i];
-        if (token.type == TokenType::_return) 
-        {
-            if (i + 1 < tokens.size() && tokens[i + 1].type == TokenType::_int) 
-            {
-                if (i + 2 < tokens.size() && tokens[i + 2].type == TokenType::semicolon)
-                {
-                    assembly << "    mov rax, 60\n";
-                    assembly << "    mov rdi, " << tokens[i + 1].val.value() << "\n";
-                    assembly << "    syscall\n";
-                    i += 2;
-                }
-
-                else
-                {
-                    std::cerr << "Expected semicolon after return statement" << std::endl;
-                    exit(EXIT_FAILURE);
-                }
-            }
-
-        }
-    }
-    return assembly.str();
-}
 
 int main(int argc, char* argv[])
 {
@@ -62,14 +32,24 @@ int main(int argc, char* argv[])
     Tokenizer tokenizer(std::move(content));
     std::vector<Token> tokens = tokenizer.tokenize();
 
+    Parser parser(move(tokens));
+    optional<ret> tree = parser.parse();
+    if (!tree.has_value())
+    {
+        std::cerr << "Not all paths return a value" << std::endl;
+        return EXIT_FAILURE;
+    }
+    
+    Generator generator(tree.value());
+
     {
         std::fstream output("out.asm", std::ios::out);
-        output << tokens_to_assembly(tokens);
+        output << generator.generate();
         output.close();
     }
 
-    system("nasm -f elf64 -o D:\\VisualStudioCodeProjects\\Tau-Compiler\\output\\out.o out.asm"); // Compile to object file
-    system("ld -o D:\\VisualStudioCodeProjects\\Tau-Compiler\\output\\out D:\\VisualStudioCodeProjects\\Tau-Compiler\\output\\out.o"); // Link object file to executable
+    system("nasm -felf64 -o out.o out.asm"); // Compile to object file
+    system("ld -o output out.o"); // Link object file to executable
 
     return EXIT_SUCCESS;
 }
